@@ -1,0 +1,12 @@
+version: 3
+
+tasks:
+  up:
+    desc: "Deploy Helm chart"
+    cmds:
+      - helm install jaeger jaegertracing/jaeger
+
+  down:
+    desc: "Delete Jaeger"
+    cmds:
+      - helm uninstall jaeger

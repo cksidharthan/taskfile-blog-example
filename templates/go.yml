@@ -1,0 +1,40 @@
+version: 3
+
+tasks:
+  dev-setup:
+    desc: "Setup development environment"
+    cmds:
+      - go install golang.org/x/tools/cmd/goimports@latest
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.52.2
+      - go install github.com/nikolaydubina/go-cover-treemap@latest
+
+  deps:
+    desc: "Dependencies Check"
+    cmds:
+      - go mod download
+      - go mod tidy
+      - go mod verify
+      - go mod vendor
+
+  fmt:
+    desc: "Format Check"
+    cmds:
+      - goimports -w -e $(find . -type f -name '*.go' -not -path "*/vendor/*")
+
+  lint:
+    desc: "Lint Check"
+    cmds:
+      - golangci-lint run --fix
+      - go vet ./...
+
+  unit-test:
+    desc: "Running unit Tests"
+    cmds:
+      - go test -coverprofile cover.out ./...
+      - go tool cover -html=cover.out -o cover.html
+      - go-cover-treemap -coverprofile cover.out > assets/cover-treemap.svg
+
+  mocks:
+    desc: "Generate mocks"
+    cmds:
+      - go generate ./...

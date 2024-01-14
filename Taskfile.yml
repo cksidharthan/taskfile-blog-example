@@ -1,0 +1,19 @@
+version: 3
+
+## add tasksfiles as per the project requirements
+includes:
+  go:
+    taskfile: templates/go.yml
+    optional: true
+  docker:
+    taskfile: templates/docker.yml
+    optional: true
+  helm:
+    taskfile: templates/helm.yml
+    optional: true
+
+tasks:
+  default:
+    desc: "Default task"
+    cmds:
+      - task --list-all
